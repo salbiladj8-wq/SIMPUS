@@ -233,16 +233,37 @@ footer {
     overflow-x: auto;
 }
 
-/* ===== Hamburger Menu ===== */
-.nav-toggle {
-    display: none;
-}
-
+/* ===== Hamburger Menu JS5 ===== */
 .nav-toggle-label {
     display: none;
     font-size: 1.6rem;
     cursor: pointer;
     color: #fff;
+    background: none;
+    border: none;
+}
+
+/* ===== Pesan Error Validasi ===== */
+.error {
+    display: block;
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* ===== Kolom Pencarian ===== */
+.search-box {
+    margin-bottom: 1rem;
+}
+
+.search-box input {
+    width: 100%;
+    max-width: 320px;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #f1c7c2;
+    border-radius: 15px;
+    font-size: 1rem;
+    background-color: #fffafa;
 }
 
 /* ===== Responsive Breakpoints ===== */
@@ -258,7 +279,7 @@ footer {
 @media (max-width: 480px) {
     header {
         position: relative;
-        }
+    }
 
     .nav-toggle-label {
         display: block;
@@ -271,7 +292,7 @@ footer {
         margin-top: 1rem;
     }
 
-    .nav-toggle:checked ~ nav {
+    header nav.nav-open {
         display: block;
     }
 
