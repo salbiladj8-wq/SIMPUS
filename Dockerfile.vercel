@@ -7,3 +7,5 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY . /app/public
 
 ENV SERVER_ROOT=/app/public
+
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
