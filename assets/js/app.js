@@ -1,4 +1,4 @@
-// ===== Hamburger menu (JS-driven) =====
+// ===== Hamburger menu =====
 function initNavToggle() {
     const toggleBtn = document.getElementById("nav-toggle-btn");
     const nav = document.querySelector("header nav");
@@ -9,21 +9,23 @@ function initNavToggle() {
     });
 }
 
-// ===== Konfirmasi hapus (EVENT DELEGATION agar bekerja pada elemen dinamis) =====
+// ===== Konfirmasi hapus =====
 function initHapusConfirm() {
     document.addEventListener("click", function (e) {
-        if (e.target && e.target.classList.contains("btn-hapus")) {
-            const row = e.target.closest("tr");
-            const nama = row ? row.querySelector("td")?.textContent : "data ini";
-            const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
-            if (yakin && row) {
-                row.remove();
-            }
+        const btn = e.target.closest(".btn-hapus");
+        if (!btn) return;
+
+        const row = btn.closest("tr");
+        const nama = row ? row.querySelector("td")?.textContent : "data ini";
+        const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
+
+        if (yakin && row) {
+            row.remove();
         }
     });
 }
 
-// ===== Filter/pencarian tabel real-time =====
+// ===== Filter pencarian tabel =====
 function initTableFilter() {
     const input = document.getElementById("search-input");
     const table = document.querySelector(".table-responsive table");
@@ -32,6 +34,7 @@ function initTableFilter() {
     input.addEventListener("keyup", function () {
         const keyword = input.value.toLowerCase();
         const rows = table.querySelectorAll("tbody tr");
+
         rows.forEach(function (row) {
             const teks = row.textContent.toLowerCase();
             row.style.display = teks.includes(keyword) ? "" : "none";
@@ -42,6 +45,7 @@ function initTableFilter() {
 // ===== Validasi form =====
 function tampilkanError(input, pesan) {
     hapusError(input);
+
     const span = document.createElement("span");
     span.className = "error";
     span.textContent = pesan;
@@ -50,6 +54,7 @@ function tampilkanError(input, pesan) {
 
 function hapusError(input) {
     const next = input.nextElementSibling;
+
     if (next && next.classList.contains("error")) {
         next.remove();
     }
@@ -63,6 +68,7 @@ function initValidasiForm() {
         let valid = true;
 
         const judul = form.querySelector("[name='judul'], [name='nama']");
+
         if (judul && judul.value.trim() === "") {
             tampilkanError(judul, "Field ini wajib diisi.");
             valid = false;
@@ -70,7 +76,8 @@ function initValidasiForm() {
             hapusError(judul);
         }
 
-        const pengarang = form.querySelector("[name='pengarang']");
+        const pengarang = form.querySelector("[name='pengarang]");
+
         if (pengarang && pengarang.value.trim() === "") {
             tampilkanError(pengarang, "Pengarang wajib diisi.");
             valid = false;
@@ -79,8 +86,10 @@ function initValidasiForm() {
         }
 
         const tahun = form.querySelector("[name='tahun']");
+
         if (tahun) {
             const nilai = parseInt(tahun.value, 10);
+
             if (isNaN(nilai) || nilai < 1900 || nilai > 2026) {
                 tampilkanError(tahun, "Tahun harus di antara 1900-2026.");
                 valid = false;
@@ -90,8 +99,10 @@ function initValidasiForm() {
         }
 
         const stok = form.querySelector("[name='stok']");
+
         if (stok) {
             const nilai = parseInt(stok.value, 10);
+
             if (isNaN(nilai) || nilai < 0) {
                 tampilkanError(stok, "Stok tidak boleh negatif.");
                 valid = false;
