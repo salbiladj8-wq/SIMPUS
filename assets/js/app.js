@@ -1,7 +1,8 @@
-// ===== Hamburger menu (JS-driven) =====
+// ===== Hamburger menu =====
 function initNavToggle() {
     const toggleBtn = document.getElementById("nav-toggle-btn");
     const nav = document.querySelector("header nav");
+
     if (!toggleBtn || !nav) return;
 
     toggleBtn.addEventListener("click", function () {
@@ -9,106 +10,178 @@ function initNavToggle() {
     });
 }
 
-// ===== Konfirmasi hapus (EVENT DELEGATION agar bekerja pada elemen dinamis) =====
-function initHapusConfirm() {
-    document.addEventListener("click", function (e) {
-        if (e.target && e.target.classList.contains("btn-hapus")) {
-            const row = e.target.closest("tr");
-            const nama = row ? row.querySelector("td")?.textContent : "data ini";
-            const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
-            if (yakin && row) {
-                row.remove();
-            }
-        }
-    });
-}
 
-// ===== Filter/pencarian tabel real-time =====
+// ===== Filter pencarian tabel =====
 function initTableFilter() {
     const input = document.getElementById("search-input");
     const table = document.querySelector(".table-responsive table");
+
     if (!input || !table) return;
 
     input.addEventListener("keyup", function () {
         const keyword = input.value.toLowerCase();
         const rows = table.querySelectorAll("tbody tr");
+
         rows.forEach(function (row) {
             const teks = row.textContent.toLowerCase();
-            row.style.display = teks.includes(keyword) ? "" : "none";
+
+            row.style.display = teks.includes(keyword)
+                ? ""
+                : "none";
         });
     });
 }
 
+
 // ===== Validasi form =====
 function tampilkanError(input, pesan) {
     hapusError(input);
+
     const span = document.createElement("span");
+
     span.className = "error";
     span.textContent = pesan;
+
     input.insertAdjacentElement("afterend", span);
 }
 
+
 function hapusError(input) {
     const next = input.nextElementSibling;
-    if (next && next.classList.contains("error")) {
+
+    if (
+        next &&
+        next.classList.contains("error")
+    ) {
         next.remove();
     }
 }
 
+
 function initValidasiForm() {
     const form = document.getElementById("form-tambah");
+
     if (!form) return;
 
     form.addEventListener("submit", function (e) {
+
         let valid = true;
 
-        const judul = form.querySelector("[name='judul'], [name='nama']");
-        if (judul && judul.value.trim() === "") {
-            tampilkanError(judul, "Field ini wajib diisi.");
+        const nama = form.querySelector(
+            "[name='nama_layanan'], [name='nama']"
+        );
+
+        if (
+            nama &&
+            nama.value.trim() === ""
+        ) {
+            tampilkanError(
+                nama,
+                "Nama wajib diisi."
+            );
+
             valid = false;
-        } else if (judul) {
-            hapusError(judul);
+
+        } else if (nama) {
+
+            hapusError(nama);
         }
 
-        const pengarang = form.querySelector("[name='pengarang']");
-        if (pengarang && pengarang.value.trim() === "") {
-            tampilkanError(pengarang, "Pengarang wajib diisi.");
+
+        const noIdentitas = form.querySelector(
+            "[name='no_pelanggan'], [name='no_karyawan']"
+        );
+
+        if (
+            noIdentitas &&
+            noIdentitas.value.trim() === ""
+        ) {
+            tampilkanError(
+                noIdentitas,
+                "Nomor wajib diisi."
+            );
+
             valid = false;
-        } else if (pengarang) {
-            hapusError(pengarang);
+
+        } else if (noIdentitas) {
+
+            hapusError(noIdentitas);
         }
 
-        const tahun = form.querySelector("[name='tahun']");
-        if (tahun) {
-            const nilai = parseInt(tahun.value, 10);
-            if (isNaN(nilai) || nilai < 1900 || nilai > 2026) {
-                tampilkanError(tahun, "Tahun harus di antara 1900-2026.");
+
+        const harga = form.querySelector(
+            "[name='harga']"
+        );
+
+        if (harga) {
+
+            const nilai = parseInt(
+                harga.value,
+                10
+            );
+
+            if (
+                isNaN(nilai) ||
+                nilai < 0
+            ) {
+                tampilkanError(
+                    harga,
+                    "Harga tidak boleh negatif."
+                );
+
                 valid = false;
+
             } else {
-                hapusError(tahun);
+
+                hapusError(harga);
             }
         }
 
-        const stok = form.querySelector("[name='stok']");
-        if (stok) {
-            const nilai = parseInt(stok.value, 10);
-            if (isNaN(nilai) || nilai < 0) {
-                tampilkanError(stok, "Stok tidak boleh negatif.");
+
+        const durasi = form.querySelector(
+            "[name='durasi']"
+        );
+
+        if (durasi) {
+
+            const nilai = parseInt(
+                durasi.value,
+                10
+            );
+
+            if (
+                isNaN(nilai) ||
+                nilai < 1
+            ) {
+                tampilkanError(
+                    durasi,
+                    "Durasi harus lebih dari 0 menit."
+                );
+
                 valid = false;
+
             } else {
-                hapusError(stok);
+
+                hapusError(durasi);
             }
         }
+
 
         if (!valid) {
             e.preventDefault();
         }
+
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    initNavToggle();
-    initHapusConfirm();
-    initTableFilter();
-    initValidasiForm();
-});
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        initNavToggle();
+        initTableFilter();
+        initValidasiForm();
+
+    }
+);
